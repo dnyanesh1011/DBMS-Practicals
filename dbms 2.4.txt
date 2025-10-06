@@ -1,0 +1,423 @@
+Enter password: ****
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 34
+Server version: 9.3.0 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2025, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| demo               |
+| demo1              |
+| information_schema |
+| mysql              |
+| performance_schema |
+| student            |
+| studentinformation |
+| sys                |
++--------------------+
+8 rows in set (0.027 sec)
+
+mysql> use demo;
+Database changed
+mysql> select ABS(-45); --Result:45
++----------+
+| ABS(-45) |
++----------+
+|       45 |
++----------+
+1 row in set (0.136 sec)
+
+    -> select CEIL(5.2),FLOOR(5.8);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '--Result:45
+select CEIL(5.2),FLOOR(5.8)' at line 1
+mysql> SELECT CEIL(5.2), FLOOR(5.8);
++-----------+------------+
+| CEIL(5.2) | FLOOR(5.8) |
++-----------+------------+
+|         6 |          5 |
++-----------+------------+
+1 row in set (0.033 sec)
+
+mysql> select 10 DIV 3;
++----------+
+| 10 DIV 3 |
++----------+
+|        3 |
++----------+
+1 row in set (0.129 sec)
+
+mysql> SELECT 10 %3;
++-------+
+| 10 %3 |
++-------+
+|     1 |
++-------+
+1 row in set (0.008 sec)
+
+mysql> select ROUND(123.4567,2);
++-------------------+
+| ROUND(123.4567,2) |
++-------------------+
+|            123.46 |
++-------------------+
+1 row in set (0.137 sec)
+
+mysql> select TRUNCATE(123.4567,2);
++----------------------+
+| TRUNCATE(123.4567,2) |
++----------------------+
+|               123.45 |
++----------------------+
+1 row in set (0.007 sec)
+
+mysql> select contact('Tejas','9325');
+ERROR 1305 (42000): FUNCTION demo.contact does not exist
+mysql> select concat('Tejas','9325');
++------------------------+
+| concat('Tejas','9325') |
++------------------------+
+| Tejas9325              |
++------------------------+
+1 row in set (0.137 sec)
+
+mysql> select REPEAT('Tejas',2);
++-------------------+
+| REPEAT('Tejas',2) |
++-------------------+
+| TejasTejas        |
++-------------------+
+1 row in set (0.138 sec)
+
+mysql> select reverse('World');
++------------------+
+| reverse('World') |
++------------------+
+| dlroW            |
++------------------+
+1 row in set (0.131 sec)
+
+mysql> select INSTR('Tejas','e');
++--------------------+
+| INSTR('Tejas','e') |
++--------------------+
+|                  2 |
++--------------------+
+1 row in set (0.148 sec)
+
+mysql> select lpad('Tejas',10,'*');
++----------------------+
+| lpad('Tejas',10,'*') |
++----------------------+
+| *****Tejas           |
++----------------------+
+1 row in set (0.129 sec)
+
+mysql> result:' *****Tejas'
+    -> select rpad('Tejas',10,'*');
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'result:' *****Tejas'
+select rpad('Tejas',10,'*')' at line 1
+mysql> select insert('Tejas',4,2,'xyz');
++---------------------------+
+| insert('Tejas',4,2,'xyz') |
++---------------------------+
+| Tejxyz                    |
++---------------------------+
+1 row in set (0.130 sec)
+
+mysql> select left('Tejas',3);
++-----------------+
+| left('Tejas',3) |
++-----------------+
+| Tej             |
++-----------------+
+1 row in set (0.008 sec)
+
+mysql> select right('Tejas',3);
++------------------+
+| right('Tejas',3) |
++------------------+
+| jas              |
++------------------+
+1 row in set (0.007 sec)
+
+mysql> select power(2,3);
++------------+
+| power(2,3) |
++------------+
+|          8 |
++------------+
+1 row in set (0.141 sec)
+
+mysql> select sqrt(169);
++-----------+
+| sqrt(169) |
++-----------+
+|        13 |
++-----------+
+1 row in set (0.137 sec)
+
+mysql> SELECT CONCAT('hello',null,'word');
++-----------------------------+
+| CONCAT('hello',null,'word') |
++-----------------------------+
+| NULL                        |
++-----------------------------+
+1 row in set (0.008 sec)
+
+mysql> create table emp(empid INT PRIMARY KEY, ename VARCHAR(50),salary DECIMAL(10, 2), dept VARCHAR(50));
+Query OK, 0 rows affected (0.415 sec)
+
+mysql> desc emp;
++--------+---------------+------+-----+---------+-------+
+| Field  | Type          | Null | Key | Default | Extra |
++--------+---------------+------+-----+---------+-------+
+| empid  | int           | NO   | PRI | NULL    |       |
+| ename  | varchar(50)   | YES  |     | NULL    |       |
+| salary | decimal(10,2) | YES  |     | NULL    |       |
+| dept   | varchar(50)   | YES  |     | NULL    |       |
++--------+---------------+------+-----+---------+-------+
+4 rows in set (0.038 sec)
+
+mysql> INSERT INTO emp (empid, ename, salary, dept) VALUES(1, 'Divya', 50000, 'Sales'),(2, 'Neha', 60000, 'HR'),(3, 'Ravi', 55000, 'Sales'),(4, 'Anita', 70000, 'IT'),(5, 'Karan', 45000, 'HR');
+Query OK, 5 rows affected (0.205 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> desc emp;
++--------+---------------+------+-----+---------+-------+
+| Field  | Type          | Null | Key | Default | Extra |
++--------+---------------+------+-----+---------+-------+
+| empid  | int           | NO   | PRI | NULL    |       |
+| ename  | varchar(50)   | YES  |     | NULL    |       |
+| salary | decimal(10,2) | YES  |     | NULL    |       |
+| dept   | varchar(50)   | YES  |     | NULL    |       |
++--------+---------------+------+-----+---------+-------+
+4 rows in set (0.026 sec)
+
+mysql> select * from emp;
++-------+-------+----------+-------+
+| empid | ename | salary   | dept  |
++-------+-------+----------+-------+
+|     1 | Divya | 50000.00 | Sales |
+|     2 | Neha  | 60000.00 | HR    |
+|     3 | Ravi  | 55000.00 | Sales |
+|     4 | Anita | 70000.00 | IT    |
+|     5 | Karan | 45000.00 | HR    |
++-------+-------+----------+-------+
+5 rows in set (0.010 sec)
+
+mysql> SELECT COUNT(*) AS total_employees FROM emp;
++-----------------+
+| total_employees |
++-----------------+
+|               5 |
++-----------------+
+1 row in set (0.041 sec)
+
+mysql> SELECT SUM(salary) AS total_salary FROM emp;
++--------------+
+| total_salary |
++--------------+
+|    280000.00 |
++--------------+
+1 row in set (0.131 sec)
+
+mysql> SELECT AVG(salary) AS avg_salary FROM emp;
++--------------+
+| avg_salary   |
++--------------+
+| 56000.000000 |
++--------------+
+1 row in set (0.143 sec)
+
+mysql>  SELECT MIN(salary) AS min_salary FROM emp;
++------------+
+| min_salary |
++------------+
+|   45000.00 |
++------------+
+1 row in set (0.141 sec)
+
+mysql> SELECT MAX(salary) AS max_salary FROM emp;
++------------+
+| max_salary |
++------------+
+|   70000.00 |
++------------+
+1 row in set (0.010 sec)
+
+mysql> SELECT dept, COUNT(*) AS emp_count FROM emp GROUP BY dept;
++-------+-----------+
+| dept  | emp_count |
++-------+-----------+
+| Sales |         2 |
+| HR    |         2 |
+| IT    |         1 |
++-------+-----------+
+3 rows in set (0.146 sec)
+
+mysql>  SELECT dept, AVG(salary) AS avg_salary FROM emp GROUP BY dept HAVING AVG(salary) > 50000;
++-------+--------------+
+| dept  | avg_salary   |
++-------+--------------+
+| Sales | 52500.000000 |
+| HR    | 52500.000000 |
+| IT    | 70000.000000 |
++-------+--------------+
+3 rows in set (0.152 sec)
+
+mysql>  SELECT CURDATE();
++------------+
+| CURDATE()  |
++------------+
+| 2025-08-08 |
++------------+
+1 row in set (0.148 sec)
+
+mysql>  SELECT CURTIME();
++-----------+
+| CURTIME() |
++-----------+
+| 08:17:57  |
++-----------+
+1 row in set (0.142 sec)
+
+mysql>  SELECT NOW();
++---------------------+
+| NOW()               |
++---------------------+
+| 2025-08-08 08:18:08 |
++---------------------+
+1 row in set (0.007 sec)
+
+mysql>  SELECT ADDDATE(CURDATE(), INTERVAL 10 DAY);
++-------------------------------------+
+| ADDDATE(CURDATE(), INTERVAL 10 DAY) |
++-------------------------------------+
+| 2025-08-18                          |
++-------------------------------------+
+1 row in set (0.008 sec)
+
+mysql> SELECT LAST_DAY(CURDATE());
++---------------------+
+| LAST_DAY(CURDATE()) |
++---------------------+
+| 2025-08-31          |
++---------------------+
+1 row in set (0.131 sec)
+
+mysql> show tables;
++----------------+
+| Tables_in_demo |
++----------------+
+| courses        |
+| emp            |
+| student        |
+| students       |
++----------------+
+4 rows in set (0.194 sec)
+
+mysql>  CREATE TABLE table1 (id INT PRIMARY KEY,name VARCHAR(50));
+Query OK, 0 rows affected (0.249 sec)
+
+mysql>  SELECT * FROM demo.table1;
+Empty set (0.151 sec)
+
+mysql>  INSERT INTO table1 (id, name) VALUES (1, 'Kishor'), (2, 'Pranav');
+Query OK, 2 rows affected (0.161 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql>  SELECT * FROM demo.table1;
++----+--------+
+| id | name   |
++----+--------+
+|  1 | Kishor |
+|  2 | Pranav |
++----+--------+
+2 rows in set (0.010 sec)
+
+mysql> CREATE TABLE table2 (id INT PRIMARY KEY,name VARCHAR(50));
+Query OK, 0 rows affected (0.338 sec)
+
+mysql>  INSERT INTO table2 VALUES (2, 'Pranav'), (3, 'Gaurav');
+Query OK, 2 rows affected (0.176 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql> SELECT name FROM table1 UNION SELECT name FROM table2;
++--------+
+| name   |
++--------+
+| Kishor |
+| Pranav |
+| Gaurav |
++--------+
+3 rows in set (0.140 sec)
+
+mysql>  SELECT name FROM table1 WHERE name IN (SELECT name FROM table2);
++--------+
+| name   |
++--------+
+| Pranav |
++--------+
+1 row in set (0.150 sec)
+
+mysql> CREATE TABLE employees_us (id INT PRIMARY KEY,name VARCHAR(50));
+Query OK, 0 rows affected (0.415 sec)
+
+mysql>  CREATE TABLE employees_europe (id INT PRIMARY KEY,name VARCHAR(50));
+Query OK, 0 rows affected (0.327 sec)
+
+mysql> INSERT INTO employees_us VALUES (1, 'Kishor'), (2, 'Pranav'), (3, 'Gaurav');
+Query OK, 3 rows affected (0.183 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql> INSERT INTO employees_europe VALUES (2, 'Pranav'), (4, 'Sham'), (5, 'Ram');
+Query OK, 3 rows affected (0.192 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql> select name from employees_us
+    -> union
+    -> SELECT name FROM employees_europe;
++--------+
+| name   |
++--------+
+| Kishor |
+| Pranav |
+| Gaurav |
+| Sham   |
+| Ram    |
++--------+
+5 rows in set (0.015 sec)
+
+mysql> select name from employees_us
+    -> union all
+    -> SELECT name FROM employees_europe;
++--------+
+| name   |
++--------+
+| Kishor |
+| Pranav |
+| Gaurav |
+| Pranav |
+| Sham   |
+| Ram    |
++--------+
+6 rows in set (0.141 sec)
+
+mysql> SELECT name FROM employees_us WHERE name IN (SELECT name FROM employees_europe);
++--------+
+| name   |
++--------+
+| Pranav |
++--------+
+1 row in set (0.014 sec)
+
+mysql>
