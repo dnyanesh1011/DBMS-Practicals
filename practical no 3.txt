@@ -1,0 +1,304 @@
+Enter password: ****
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 10
+Server version: 9.3.0 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2025, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> create database collage;
+Query OK, 1 row affected (0.217 sec)
+
+mysql> use collage;
+Database changed
+mysql> create table student(sid int primary key,name varchar(30),major varchar(30),cgpa decimal(3,2));
+Query OK, 0 rows affected (0.445 sec)
+
+mysql> create table enrollment(eid int primary key,sid int,course varchar(30),grade varchar(5),credits int);
+Query OK, 0 rows affected (0.348 sec)
+
+mysql> insert into student(sid,name ,major,cgpa) values
+    -> (1,'Tejas','computer science',9.0),
+    -> (2,'Kishor','mathematcs',8.5),
+    -> (3,'Pranav','physics',8.8),
+    -> (4,'Gaurav','computer science',8.2),
+    -> (5,'Mauli','mathematics',8.4);
+Query OK, 5 rows affected (0.319 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> insert into enrollment(eid,sid,course,grade,credits) values
+    -> (101,1,'database','A',3),
+    -> (102,1,'programming','A+',5),
+    -> (103,2,'Data structure','B+',4),
+    -> (104,2,'calculas','B',3),
+    -> (105,3,'Algebra','A',4),
+    -> (106,4,'Data analysis','A+',4),
+    -> (107,5,'Cloud computing','A',3);
+Query OK, 7 rows affected (0.202 sec)
+Records: 7  Duplicates: 0  Warnings: 0
+
+mysql> select s.name,e.eid,e.course,e.grade
+    -> from student s
+    -> inner join enrollment e on s.sid=e.sid;
++--------+-----+-----------------+-------+
+| name   | eid | course          | grade |
++--------+-----+-----------------+-------+
+| Tejas  | 101 | database        | A     |
+| Tejas  | 102 | programming     | A+    |
+| Kishor | 103 | Data structure  | B+    |
+| Kishor | 104 | calculas        | B     |
+| Pranav | 105 | Algebra         | A     |
+| Gaurav | 106 | Data analysis   | A+    |
+| Mauli  | 107 | Cloud computing | A     |
++--------+-----+-----------------+-------+
+7 rows in set (0.208 sec)
+
+mysql> select s.name,e.eid,e.course,e.grade
+    -> from student s
+    -> right join enrollment e on s.sid=e.sid;
++--------+-----+-----------------+-------+
+| name   | eid | course          | grade |
++--------+-----+-----------------+-------+
+| Tejas  | 101 | database        | A     |
+| Tejas  | 102 | programming     | A+    |
+| Kishor | 103 | Data structure  | B+    |
+| Kishor | 104 | calculas        | B     |
+| Pranav | 105 | Algebra         | A     |
+| Gaurav | 106 | Data analysis   | A+    |
+| Mauli  | 107 | Cloud computing | A     |
++--------+-----+-----------------+-------+
+7 rows in set (0.162 sec)
+
+mysql> select s.name,e.eid,e.course,e.grade
+    -> from student s
+    -> left join enrollment e on s.sid=e.sid;
++--------+------+-----------------+-------+
+| name   | eid  | course          | grade |
++--------+------+-----------------+-------+
+| Tejas  |  102 | programming     | A+    |
+| Tejas  |  101 | database        | A     |
+| Kishor |  104 | calculas        | B     |
+| Kishor |  103 | Data structure  | B+    |
+| Pranav |  105 | Algebra         | A     |
+| Gaurav |  106 | Data analysis   | A+    |
+| Mauli  |  107 | Cloud computing | A     |
++--------+------+-----------------+-------+
+7 rows in set (0.172 sec)
+
+mysql> select s.sid,s.name,e.eid,e.course,e.grade
+    -> from student s
+    -> left join enrollment e on s.sid=e.sid
+    -> UNION
+    -> select s.sid,s.name,e.eid,e.course,e.grade
+    -> from student s
+    -> right join enrollment e on s.sid=e.sid;
++------+--------+------+-----------------+-------+
+| sid  | name   | eid  | course          | grade |
++------+--------+------+-----------------+-------+
+|    1 | Tejas  |  102 | programming     | A+    |
+|    1 | Tejas  |  101 | database        | A     |
+|    2 | Kishor |  104 | calculas        | B     |
+|    2 | Kishor |  103 | Data structure  | B+    |
+|    3 | Pranav |  105 | Algebra         | A     |
+|    4 | Gaurav |  106 | Data analysis   | A+    |
+|    5 | Mauli  |  107 | Cloud computing | A     |
++------+--------+------+-----------------+-------+
+7 rows in set (0.170 sec)
+
+mysql> select s.name,s.major,SUM(e.credits) as total credits,
+    -> ROUND(AVG(
+    -> CASE e.grade
+    -> when 'A' then 8.5
+    -> when 'A+' then 9
+    -> when 'B+' then 8
+    -> when 'B' then 7.5
+    -> ELSE NULL
+    -> end
+    -> ),2) as avg_cgpa
+    -> from student s
+    -> left join enrollment e on s.sid=e.sid
+    -> group by s.sid,s.name,s.major;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'credits,
+ROUND(AVG(
+CASE e.grade
+when 'A' then 8.5
+when 'A+' then 9
+when 'B+' th' at line 1
+mysql> SELECT
+    ->     s.name,
+    ->     s.major,
+    ->     SUM(e.credits) AS total_credits,
+    ->     ROUND(AVG(
+    ->         CASE e.grade
+    ->             WHEN 'A+' THEN 9
+    ->             WHEN 'A' THEN 8.5
+    ->             WHEN 'B+' THEN 8
+    ->             WHEN 'B' THEN 7.5
+    ->             ELSE NULL
+    ->         END
+    ->     ), 2) AS avg_cgpa
+    -> FROM
+    ->     student s
+    -> LEFT JOIN
+    ->     enrollment e ON s.sid = e.sid
+    -> GROUP BY
+    ->     s.sid, s.name, s.major;
++--------+------------------+---------------+----------+
+| name   | major            | total_credits | avg_cgpa |
++--------+------------------+---------------+----------+
+| Tejas  | computer science |             8 |     8.75 |
+| Kishor | mathematcs       |             7 |     7.75 |
+| Pranav | physics          |             4 |     8.50 |
+| Gaurav | computer science |             4 |     9.00 |
+| Mauli  | mathematics      |             3 |     8.50 |
++--------+------------------+---------------+----------+
+5 rows in set (0.216 sec)
+
+mysql> select * from student WHERE cgpa >(select cgpa from student WHERE name='Pranav');
++-----+-------+------------------+------+
+| sid | name  | major            | cgpa |
++-----+-------+------------------+------+
+|   1 | Tejas | computer science | 9.00 |
++-----+-------+------------------+------+
+1 row in set (0.146 sec)
+
+mysql> select course from enrollment WHERE sid in(select sid from student WHERE major='computer science');
++---------------+
+| course        |
++---------------+
+| database      |
+| programming   |
+| Data analysis |
++---------------+
+3 rows in set (0.012 sec)
+
+mysql> select * from enrollment where sid=(select sid from student where cgpa=(select MAX(cgpa)from student);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 1
+mysql> SELECT * FROM enrollment WHERE sid=(SELECT sid FROM student WHERE cgpa=(SELECT MAX(cgpa) FROM student);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 1
+mysql> SELECT * FROM enrollment WHERE sid=(SELECT sid FROM student WHERE cgpa=(SELECT MAX(cgpa) FROM student);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 1
+mysql> SELECT *
+    -> FROM enrollment
+    -> WHERE sid = (
+    ->     SELECT sid
+    ->     FROM student
+    ->     WHERE cgpa = (
+    ->         SELECT MAX(cgpa)
+    ->         FROM student
+    ->     )
+    -> );
++-----+------+-------------+-------+---------+
+| eid | sid  | course      | grade | credits |
++-----+------+-------------+-------+---------+
+| 101 |    1 | database    | A     |       3 |
+| 102 |    1 | programming | A+    |       5 |
++-----+------+-------------+-------+---------+
+2 rows in set (0.150 sec)
+
+mysql> select * from student
+    -> where sid on(
+    -> select sid from enrollment
+    -> group by sid
+    -> having count(*)>1);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'on(
+select sid from enrollment
+group by sid
+having count(*)>1)' at line 2
+mysql> SELECT * FROM student
+    -> WHERE sid IN (
+    ->     SELECT sid
+    ->     FROM enrollment
+    ->     GROUP BY sid
+    ->     HAVING COUNT(*) > 1
+    -> );
++-----+--------+------------------+------+
+| sid | name   | major            | cgpa |
++-----+--------+------------------+------+
+|   1 | Tejas  | computer science | 9.00 |
+|   2 | Kishor | mathematcs       | 8.50 |
++-----+--------+------------------+------+
+2 rows in set (0.152 sec)
+
+mysql> select * from student s
+    -> WHERE EXISTS (
+    -> select 1 from enrollment e
+    -> Where e.sid=s.sid);
++-----+--------+------------------+------+
+| sid | name   | major            | cgpa |
++-----+--------+------------------+------+
+|   1 | Tejas  | computer science | 9.00 |
+|   2 | Kishor | mathematcs       | 8.50 |
+|   3 | Pranav | physics          | 8.80 |
+|   4 | Gaurav | computer science | 8.20 |
+|   5 | Mauli  | mathematics      | 8.40 |
++-----+--------+------------------+------+
+5 rows in set (0.022 sec)
+
+mysql> select * from student s
+    -> WHERE NOT EXISTS(
+    -> select 1 from enrollment e
+    -> where e.sid = s.sid);
+Empty set (0.013 sec)
+
+mysql> select name,
+    -> (SELECT COUNT(*) from enrollment e WHERE e.sid=s.sid)AS cousre_count from student s;
++--------+--------------+
+| name   | cousre_count |
++--------+--------------+
+| Tejas  |            2 |
+| Kishor |            2 |
+| Pranav |            1 |
+| Gaurav |            1 |
+| Mauli  |            1 |
++--------+--------------+
+5 rows in set (0.011 sec)
+
+mysql> select * from student s
+    -> WHERE cgpa > (
+    -> select AVG(cgpa) from student
+    -> WHERE major = s.major
+    -> );
++-----+-------+------------------+------+
+| sid | name  | major            | cgpa |
++-----+-------+------------------+------+
+|   1 | Tejas | computer science | 9.00 |
++-----+-------+------------------+------+
+1 row in set (0.022 sec)
+
+mysql> select * from student s
+    -> where(
+    -> select SUM(credits) from enrollment e WHERE e.sid=s.sid
+    -> )>(
+    -> select AVG(total_credits) from (
+    -> select sid,SUM(credits) AS total_credits
+    -> FROM enrollment
+    -> group by sid
+    -> )AS credit_tatals
+    -> );
++-----+--------+------------------+------+
+| sid | name   | major            | cgpa |
++-----+--------+------------------+------+
+|   1 | Tejas  | computer science | 9.00 |
+|   2 | Kishor | mathematcs       | 8.50 |
++-----+--------+------------------+------+
+2 rows in set (0.019 sec)
+
+mysql> select * from student
+    -> WHERE major ='computer science'
+    -> AND cgpa > (
+    -> select AVG(cgpa) FROM student
+    -> );
++-----+-------+------------------+------+
+| sid | name  | major            | cgpa |
++-----+-------+------------------+------+
+|   1 | Tejas | computer science | 9.00 |
++-----+-------+------------------+------+
+1 row in set (0.018 sec)
+
+mysql>
