@@ -1,0 +1,205 @@
+Enter password: ****
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 12
+Server version: 9.3.0 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2025, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> create database demo;
+Query OK, 1 row affected (0.203 sec)
+
+mysql> use demo;
+Database changed
+mysql> create table student(NAME varchar(20),DOB int, EMAIL ID varchar(20));
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'ID varchar(20))' at line 1
+mysql> create table student1(NAME varchar(20),DOB int, EMAIL ID varchar(20));
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'ID varchar(20))' at line 1
+mysql> create table students(NAME varchar(20),DOB int, EMAIL ID varchar(20));
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'ID varchar(20))' at line 1
+mysql> create table students(NAME varchar(20),DOB int, EMAILID varchar(20));
+Query OK, 0 rows affected (0.324 sec)
+
+mysql> desc student;
+ERROR 1146 (42S02): Table 'demo.student' doesn't exist
+mysql> desc students;
++---------+-------------+------+-----+---------+-------+
+| Field   | Type        | Null | Key | Default | Extra |
++---------+-------------+------+-----+---------+-------+
+| NAME    | varchar(20) | YES  |     | NULL    |       |
+| DOB     | int         | YES  |     | NULL    |       |
+| EMAILID | varchar(20) | YES  |     | NULL    |       |
++---------+-------------+------+-----+---------+-------+
+3 rows in set (0.373 sec)
+
+mysql> alter table student add (DepartmentId varchar(10));
+ERROR 1146 (42S02): Table 'demo.student' doesn't exist
+mysql> alter table students add (DepartmentId varchar(10));
+Query OK, 0 rows affected (0.635 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc students;
++--------------+-------------+------+-----+---------+-------+
+| Field        | Type        | Null | Key | Default | Extra |
++--------------+-------------+------+-----+---------+-------+
+| NAME         | varchar(20) | YES  |     | NULL    |       |
+| DOB          | int         | YES  |     | NULL    |       |
+| EMAILID      | varchar(20) | YES  |     | NULL    |       |
+| DepartmentId | varchar(10) | YES  |     | NULL    |       |
++--------------+-------------+------+-----+---------+-------+
+4 rows in set (0.031 sec)
+
+mysql> alter table students add (studentsID int primary key);
+Query OK, 0 rows affected (0.565 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc students;
++--------------+-------------+------+-----+---------+-------+
+| Field        | Type        | Null | Key | Default | Extra |
++--------------+-------------+------+-----+---------+-------+
+| NAME         | varchar(20) | YES  |     | NULL    |       |
+| DOB          | int         | YES  |     | NULL    |       |
+| EMAILID      | varchar(20) | YES  |     | NULL    |       |
+| DepartmentId | varchar(10) | YES  |     | NULL    |       |
+| studentsID   | int         | NO   | PRI | NULL    |       |
++--------------+-------------+------+-----+---------+-------+
+5 rows in set (0.029 sec)
+
+mysql> alter table students modify EMAILID varchar(19) DEFAULT 'abc@gmail.com';
+Query OK, 0 rows affected (0.687 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc students;
++--------------+-------------+------+-----+---------------+-------+
+| Field        | Type        | Null | Key | Default       | Extra |
++--------------+-------------+------+-----+---------------+-------+
+| NAME         | varchar(20) | YES  |     | NULL          |       |
+| DOB          | int         | YES  |     | NULL          |       |
+| EMAILID      | varchar(19) | YES  |     | abc@gmail.com |       |
+| DepartmentId | varchar(10) | YES  |     | NULL          |       |
+| studentsID   | int         | NO   | PRI | NULL          |       |
++--------------+-------------+------+-----+---------------+-------+
+5 rows in set (0.032 sec)
+
+mysql> alter table students add CONSTRAINT studentsId CHECK (studentsId>999);
+Query OK, 0 rows affected (0.672 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc students;
++--------------+-------------+------+-----+---------------+-------+
+| Field        | Type        | Null | Key | Default       | Extra |
++--------------+-------------+------+-----+---------------+-------+
+| NAME         | varchar(20) | YES  |     | NULL          |       |
+| DOB          | int         | YES  |     | NULL          |       |
+| EMAILID      | varchar(19) | YES  |     | abc@gmail.com |       |
+| DepartmentId | varchar(10) | YES  |     | NULL          |       |
+| studentsID   | int         | NO   | PRI | NULL          |       |
++--------------+-------------+------+-----+---------------+-------+
+5 rows in set (0.028 sec)
+
+mysql> alter table students modify DepartmentId varchar(10) NOT NULL;
+Query OK, 0 rows affected (0.546 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc students;
++--------------+-------------+------+-----+---------------+-------+
+| Field        | Type        | Null | Key | Default       | Extra |
++--------------+-------------+------+-----+---------------+-------+
+| NAME         | varchar(20) | YES  |     | NULL          |       |
+| DOB          | int         | YES  |     | NULL          |       |
+| EMAILID      | varchar(19) | YES  |     | abc@gmail.com |       |
+| DepartmentId | varchar(10) | NO   |     | NULL          |       |
+| studentsID   | int         | NO   | PRI | NULL          |       |
++--------------+-------------+------+-----+---------------+-------+
+5 rows in set (0.029 sec)
+
+mysql> alter table students modify NAME char(30);
+Query OK, 0 rows affected (0.581 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc students;
++--------------+-------------+------+-----+---------------+-------+
+| Field        | Type        | Null | Key | Default       | Extra |
++--------------+-------------+------+-----+---------------+-------+
+| NAME         | char(30)    | YES  |     | NULL          |       |
+| DOB          | int         | YES  |     | NULL          |       |
+| EMAILID      | varchar(19) | YES  |     | abc@gmail.com |       |
+| DepartmentId | varchar(10) | NO   |     | NULL          |       |
+| studentsID   | int         | NO   | PRI | NULL          |       |
++--------------+-------------+------+-----+---------------+-------+
+5 rows in set (0.027 sec)
+
+mysql> alter table students modify  NAME char(10) DEFAULT 'cse';
+Query OK, 0 rows affected (0.681 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc students;
++--------------+-------------+------+-----+---------------+-------+
+| Field        | Type        | Null | Key | Default       | Extra |
++--------------+-------------+------+-----+---------------+-------+
+| NAME         | char(10)    | YES  |     | cse           |       |
+| DOB          | int         | YES  |     | NULL          |       |
+| EMAILID      | varchar(19) | YES  |     | abc@gmail.com |       |
+| DepartmentId | varchar(10) | NO   |     | NULL          |       |
+| studentsID   | int         | NO   | PRI | NULL          |       |
++--------------+-------------+------+-----+---------------+-------+
+5 rows in set (0.027 sec)
+
+mysql> create table  enroll(ERNO int,CourseName varchar(10));
+Query OK, 0 rows affected (0.358 sec)
+
+mysql> desc students;
++--------------+-------------+------+-----+---------------+-------+
+| Field        | Type        | Null | Key | Default       | Extra |
++--------------+-------------+------+-----+---------------+-------+
+| NAME         | char(10)    | YES  |     | cse           |       |
+| DOB          | int         | YES  |     | NULL          |       |
+| EMAILID      | varchar(19) | YES  |     | abc@gmail.com |       |
+| DepartmentId | varchar(10) | NO   |     | NULL          |       |
+| studentsID   | int         | NO   | PRI | NULL          |       |
++--------------+-------------+------+-----+---------------+-------+
+5 rows in set (0.027 sec)
+
+mysql> desc enroll;
++------------+-------------+------+-----+---------+-------+
+| Field      | Type        | Null | Key | Default | Extra |
++------------+-------------+------+-----+---------+-------+
+| ERNO       | int         | YES  |     | NULL    |       |
+| CourseName | varchar(10) | YES  |     | NULL    |       |
++------------+-------------+------+-----+---------+-------+
+2 rows in set (0.034 sec)
+
+mysql> alter table enroll add (studentsId int);
+Query OK, 0 rows affected (0.545 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc enroll;
++------------+-------------+------+-----+---------+-------+
+| Field      | Type        | Null | Key | Default | Extra |
++------------+-------------+------+-----+---------+-------+
+| ERNO       | int         | YES  |     | NULL    |       |
+| CourseName | varchar(10) | YES  |     | NULL    |       |
+| studentsId | int         | YES  |     | NULL    |       |
++------------+-------------+------+-----+---------+-------+
+3 rows in set (0.028 sec)
+
+mysql> alter table enroll add(FOREIGN KEY (studentsId) REFERENCES students (studentsId));
+Query OK, 0 rows affected (0.839 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc enroll;
++------------+-------------+------+-----+---------+-------+
+| Field      | Type        | Null | Key | Default | Extra |
++------------+-------------+------+-----+---------+-------+
+| ERNO       | int         | YES  |     | NULL    |       |
+| CourseName | varchar(10) | YES  |     | NULL    |       |
+| studentsId | int         | YES  | MUL | NULL    |       |
++------------+-------------+------+-----+---------+-------+
+3 rows in set (0.031 sec)
+
+mysql>
