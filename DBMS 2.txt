@@ -1,0 +1,224 @@
+Enter password: ****
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 17
+Server version: 9.3.0 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2025, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| demo               |
+| demo1              |
+| information_schema |
+| mysql              |
+| performance_schema |
+| studentinformation |
+| sys                |
++--------------------+
+7 rows in set (0.024 sec)
+
+mysql> create database student;
+Query OK, 1 row affected (0.203 sec)
+
+mysql> use student;
+Database changed
+mysql> create table student(enno int primary key,name varchar(20),class char(10),address varchar(40));
+Query OK, 0 rows affected (0.327 sec)
+
+mysql> create table course(courseid int(20) primary key,course_name varchar(25),credit int(10));
+Query OK, 0 rows affected, 2 warnings (0.372 sec)
+
+mysql> create table enrollments(eid int primary key,eno int,courseid int ,year date);
+Query OK, 0 rows affected (0.333 sec)
+
+mysql> insert into student values(101,'Tejas','TE','varale');
+Query OK, 1 row affected (0.193 sec)
+
+mysql>  insert into student values
+    ->  (102,'Gaurav','TE','varale'),
+    -> (103,'Pranav','TE','varale'),
+    ->  (104,'Kishor','TE','varale');
+Query OK, 3 rows affected (0.177 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql> select * from student;
++------+--------+-------+---------+
+| enno | name   | class | address |
++------+--------+-------+---------+
+|  101 | Tejas  | TE    | varale  |
+|  102 | Gaurav | TE    | varale  |
+|  103 | Pranav | TE    | varale  |
+|  104 | Kishor | TE    | varale  |
++------+--------+-------+---------+
+4 rows in set (0.009 sec)
+
+mysql>  insert into course values(1001,'Comp',9);
+Query OK, 1 row affected (0.174 sec)
+
+mysql> insert into course values
+    -> (1002,'comp',9),
+    -> (1003,'IT',10),
+    -> (1004,'civil',10);
+Query OK, 3 rows affected (0.210 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql> select * from course;
++----------+-------------+--------+
+| courseid | course_name | credit |
++----------+-------------+--------+
+|     1001 | Comp        |      9 |
+|     1002 | comp        |      9 |
+|     1003 | IT          |     10 |
+|     1004 | civil       |     10 |
++----------+-------------+--------+
+4 rows in set (0.008 sec)
+
+mysql>  insert into enrollments values
+    -> (1,101,1001,'2005-2-10'),
+    -> (2,102,1002,'2005-2-11'),
+    -> (3,103,1003,'2005-3-31'),
+    ->  (4,104,1004,'2005-5-31');
+Query OK, 4 rows affected (0.189 sec)
+Records: 4  Duplicates: 0  Warnings: 0
+
+mysql> select * from enrollments;
++-----+------+----------+------------+
+| eid | eno  | courseid | year       |
++-----+------+----------+------------+
+|   1 |  101 |     1001 | 2005-02-10 |
+|   2 |  102 |     1002 | 2005-02-11 |
+|   3 |  103 |     1003 | 2005-03-31 |
+|   4 |  104 |     1004 | 2005-05-31 |
++-----+------+----------+------------+
+4 rows in set (0.009 sec)
+
+mysql> CREATE VIEW studentview1 AS
+    -> SELECT enno, name FROM student;
+Query OK, 0 rows affected (0.207 sec)
+
+mysql> select * from studentview1;
++------+--------+
+| enno | name   |
++------+--------+
+|  101 | Tejas  |
+|  102 | Gaurav |
+|  103 | Pranav |
+|  104 | Kishor |
++------+--------+
+4 rows in set (0.018 sec)
+
+mysql> insert into studentview1 (enno,name) values (105,'Akash');
+Query OK, 1 row affected (0.184 sec)
+
+mysql> select * from studentview1;
++------+--------+
+| enno | name   |
++------+--------+
+|  101 | Tejas  |
+|  102 | Gaurav |
+|  103 | Pranav |
+|  104 | Kishor |
+|  105 | Akash  |
++------+--------+
+5 rows in set (0.011 sec)
+
+mysql> delete from studentview1 where enno=102;
+Query OK, 1 row affected (0.166 sec)
+
+mysql> select * from studentview1;
++------+--------+
+| enno | name   |
++------+--------+
+|  101 | Tejas  |
+|  103 | Pranav |
+|  104 | Kishor |
+|  105 | Akash  |
++------+--------+
+4 rows in set (0.012 sec)
+
+mysql> update studentview1 set name='Suraj' where enno=105;
+Query OK, 1 row affected (0.195 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from studentview1;
++------+--------+
+| enno | name   |
++------+--------+
+|  101 | Tejas  |
+|  103 | Pranav |
+|  104 | Kishor |
+|  105 | Suraj  |
++------+--------+
+4 rows in set (0.011 sec)
+mysql> create view env as
+    -> select s.name as student_name,
+    -> c.course_name,
+    -> e.year as year
+    -> from
+    -> student s
+    -> join
+    -> enrollments e on s.enno=eno
+    -> join
+    -> course c on e.courseid = c.courseid;
+Query OK, 0 rows affected (0.102 sec)
+
+mysql> select * from env;
++--------------+-------------+------------+
+| student_name | course_name | year       |
++--------------+-------------+------------+
+| Gaurav Singh | Comp        | 2005-02-10 |
+| Pranav       | IT          | 2005-03-31 |
+| Kishor       | civil       | 2005-05-31 |
++--------------+-------------+------------+
+3 rows in set (0.016 sec)
+
+mysql> update student set name=
+    -> 'Tejas' where enno=101;
+Query OK, 1 row affected (0.065 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from env;
++--------------+-------------+------------+
+| student_name | course_name | year       |
++--------------+-------------+------------+
+| Tejas        | Comp        | 2005-02-10 |
+| Pranav       | IT          | 2005-03-31 |
+| Kishor       | civil       | 2005-05-31 |
++--------------+-------------+------------+
+3 rows in set (0.014 sec)
+
+mysql> insert into student (enno, name) VALUES (108,'Gaurav');
+Query OK, 1 row affected (0.163 sec)
+
+mysql> insert into course (courseid,course_name) VALUES (202,'ENTC');
+Query OK, 1 row affected (0.104 sec)
+
+mysql> insert into course (eid, eno, courseid, year) VALUES (302, 102, 202, '2005-09-19');
+ERROR 1054 (42S22): Unknown column 'eid' in 'field list'
+
+mysql> INSERT INTO enrollments (eid, eno, courseid, year)
+    -> VALUES (108, 308, 202, '2005-09-19');
+Query OK, 1 row affected (0.115 sec)
+
+mysql> delete from course where course_name='civil';
+Query OK, 1 row affected (0.112 sec)
+
+mysql> select * from env;
++--------------+-------------+------------+
+| student_name | course_name | year       |
++--------------+-------------+------------+
+| Tejas        | Comp        | 2005-02-10 |
+| Pranav       | IT          | 2005-03-31 |
++--------------+-------------+------------+
+2 rows in set (0.013 sec)
+
+
+mysql>
